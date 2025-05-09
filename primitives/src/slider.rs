@@ -294,24 +294,24 @@ pub fn SliderThumb(props: SliderThumbProps) -> Element {
     }
 }
 
-/// 線形スケール変換を行う関数
-/// input: 入力範囲 [min, max]
-/// output: 出力範囲 [min, max]
-/// 戻り値: 変換関数
+/// Function to perform linear scale transformation
+/// input: Input range [min, max]
+/// output: Output range [min, max]
+/// Returns: Transformation function
 fn linear_scale(input: [f64; 2], output: [f64; 2]) -> impl Fn(f64) -> f64 {
     let [in_min, in_max] = input;
     let [out_min, out_max] = output;
     
     move |x: f64| {
-        // 入力範囲での位置を計算 (0.0 ~ 1.0)
+        // Calculate position in input range (0.0 ~ 1.0)
         let normalized = (x - in_min) / (in_max - in_min);
         
-        // 出力範囲に変換
+        // Convert to output range
         out_min + normalized * (out_max - out_min)
     }
 }
 
-/// ポインター位置から値を取得する関数
+/// Function to get value from pointer position
 fn get_value_from_pointer(pointer_position: f64, rect: &Rect<f64, Pixels>, min: f64, max: f64, inverted: bool) -> f64 {
     let input = [0.0, rect.width()];
     let output = if !inverted { [min, max] } else { [max, min] };
